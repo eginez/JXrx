@@ -9,6 +9,7 @@ import javafx.scene.control.ListView
 import javafx.scene.input.Clipboard
 import javafx.scene.layout.VBox
 import tornadofx.*
+import java.util.*
 import kotlin.concurrent.fixedRateTimer
 
 class MyView: View() {
@@ -18,12 +19,13 @@ class MyView: View() {
     var model = emptySet<String>()
     var content = FXCollections.observableArrayList<String>()
     var listView = ListView<String>(content)
+    var timer: Timer
 
     init {
         label.text = "Hello"
         root += label
         root += listView
-        fixedRateTimer(name="clipboardChecker", initialDelay = 0, period = 500) {
+        timer = fixedRateTimer(name="clipboardChecker", initialDelay = 0, period = 500, daemon = true) {
             Platform.runLater {
                 val string = Clipboard.getSystemClipboard().string
                 if (!model.contains(string)) {
@@ -32,10 +34,13 @@ class MyView: View() {
                 }
             }
         }
+
     }
 }
 
 class JXrxApp:App(MyView::class)
+
+
 
 fun main(args: Array<String>) {
     Application.launch(JXrxApp::class.java, *args)
