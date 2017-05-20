@@ -22,9 +22,16 @@ class MyView: View() {
     var timer: Timer
 
     init {
-        label.text = "Hello"
+        label.text = "BufferContent"
         root += label
-        root += listView
+        root += listView.apply {
+            setOnMouseClicked { mouseEvent ->
+                if (mouseEvent.clickCount == 2) {
+                    val item = this.selectionModel.selectedItem
+                    Clipboard.getSystemClipboard().putString(item)
+                }
+            }
+        }
         timer = fixedRateTimer(name="clipboardChecker", initialDelay = 0, period = 500, daemon = true) {
             Platform.runLater {
                 val string = Clipboard.getSystemClipboard().string
