@@ -1,3 +1,4 @@
+//@file:JvmName("JXrxApp")
 package com.eginez.JXrx
 
 import javafx.application.Application
@@ -28,7 +29,6 @@ class MyView: View() {
                 if (!model.contains(string)) {
                     model += string
                     content.add(0, string)
-                    println("New content added")
                 }
             }
         }
